@@ -1,2 +1,102 @@
 <!DOCTYPE html>
-<html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Guffers</title></head><body><h1>Guffers</h1><h2>Welcome to Guffers</h2><button>Get Started</button></body></html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guffers</title>
+
+<style>
+:root {
+  --bg: #0b0f12;
+  --panel: #131a20;
+  --gold: #d7a93d;
+  --text: #ecf0f1;
+}<div>
+  <h2>Player 1 Life: <span id="p1Life">40</span></h2>
+  <button onclick="changeLife('p1Life', 1)">+1</button>
+  <button onclick="changeLife('p1Life', -1)">-1</button>
+
+  <h2>Player 2 Life: <span id="p2Life">40</span></h2>
+  <button onclick="changeLife('p2Life', 1)">+1</button>
+  <button onclick="changeLife('p2Life', -1)">-1</button>
+
+  <hr>
+
+  <h2>Virtual D20</h2>
+
+  <div id="d20" style="
+    width: 140px;
+    height: 140px;
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #d7a93d;
+    color: #0b0f12;
+    font-size: 48px;
+    font-weight: bold;
+    clip-path: polygon(
+      50% 0%,
+      90% 20%,
+      100% 60%,
+      75% 100%,
+      25% 100%,
+      0% 60%,
+      10% 20%
+    );
+    transition: transform 0.1s;
+  ">
+    20
+  </div>
+
+  <button onclick="rollD20()">ROLL D20</button>
+</div>
+
+<script>
+  function changeLife(playerId, amount) {
+    const player = document.getElementById(playerId);
+    let life = parseInt(player.textContent);
+
+    life = life + amount;
+
+    player.textContent = life;
+  }
+
+  function rollD20() {
+    const die = document.getElementById("d20");
+
+    let rolls = 0;
+
+    const rolling = setInterval(function () {
+      const randomNumber = Math.floor(Math.random() * 20) + 1;
+
+      die.textContent = randomNumber;
+
+      const rotateX = Math.floor(Math.random() * 360);
+      const rotateY = Math.floor(Math.random() * 360);
+      const rotateZ = Math.floor(Math.random() * 360);
+
+      die.style.transform =
+        "rotateX(" +
+        rotateX +
+        "deg) rotateY(" +
+        rotateY +
+        "deg) rotateZ(" +
+        rotateZ +
+        "deg) scale(1.15)";
+
+      rolls++;
+
+      if (rolls >= 18) {
+        clearInterval(rolling);
+
+        const finalRoll = Math.floor(Math.random() * 20) + 1;
+
+        die.textContent = finalRoll;
+
+        die.style.transform =
+          "rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1)";
+      }
+    }, 80);
+  }
+</script>
